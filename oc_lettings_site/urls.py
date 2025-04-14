@@ -6,6 +6,6 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('lettings/', include('lettings.urls')),
-    path('profiles/', include('profiles.urls')),
+    path('profiles/', include(('profiles.urls', 'profiles'), namespace='profiles')),
     path('admin/', admin.site.urls),
 ]
