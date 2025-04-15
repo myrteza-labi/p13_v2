@@ -17,3 +17,7 @@ def letting(request, letting_id):
         'address': letting.address,
     }
     return render(request, 'lettings/letting.html', context)
+
+def test_sentry(request):
+    raise Exception("Test de Sentry")
+
