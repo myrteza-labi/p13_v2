@@ -1,5 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Letting
+from django.http import HttpResponse
+
+def test_error(request):
+    raise Exception("Test d'erreur 500")
 
 def lettings_index(request):
     lettings_list = Letting.objects.all()

@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Erreur 500 - Erreur interne{% endblock %}
+{% block title %}Erreur 500 - Erreur interne du serveur{% endblock %}
 
 {% block content %}
 <div class="container">
     <h1>500 - Erreur interne du serveur</h1>
-    <p>Une erreur est survenue sur le serveur. Veuillez réessayer plus tard.</p>
+    <p>Désolé, quelque chose s'est mal passé. Nos techniciens ont été informés et nous travaillons à résoudre le problème.</p>
     <a href="{% url 'index' %}">Retour à l'accueil</a>
 </div>
 {% endblock %}
