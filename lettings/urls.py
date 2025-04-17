@@ -16,4 +16,5 @@ urlpatterns = [
     path("", views.lettings_index, name="index"),
     # /lettings/3/
     path("<int:letting_id>/", views.letting, name="letting"),
+    path("test_error/", views.test_error, name="test_error"),
 ]
