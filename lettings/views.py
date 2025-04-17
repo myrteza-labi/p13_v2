@@ -1,23 +1,99 @@
+"""
+lettings.views
+Vues HTTP pour l’application **lettings**.
+
+Contient :
+- `lettings_index` : page listant toutes les annonces.
+- `letting` : page de détail d’une annonce précise.
+- `test_error` : déclenche volontairement une exception 500 pour tester la page d’erreur.
+- `test_sentry` : déclenche une exception capturée par Sentry pour vérifier l’intégration.
+"""
+
 from django.shortcuts import render, get_object_or_404
 from .models import Letting
-from django.http import HttpResponse
 
-def test_error(request):
-    raise Exception("Test d'erreur 500")
+# --------------------------------------------------------------------------- #
+# Vues « utiles »
+# --------------------------------------------------------------------------- #
+
 
 def lettings_index(request):
+    """
+    Page d’accueil des lettings (liste des annonces).
+
+    Parameters
+    ----------
+    request : HttpRequest
+        Requête HTTP entrante.
+
+    Returns
+    -------
+    HttpResponse
+        Rendu du template ``lettings/index.html`` avec la liste des annonces.
+    """
     lettings_list = Letting.objects.all()
-    context = {'lettings_list': lettings_list}
-    return render(request, 'lettings/index.html', context)
+    context = {"lettings_list": lettings_list}
+    return render(request, "lettings/index.html", context)
+
 
 def letting(request, letting_id):
-    letting = get_object_or_404(Letting, id=letting_id)
+    """
+    Page de détail pour une annonce donnée.
+
+    Parameters
+    ----------
+    request : HttpRequest
+        Requête HTTP entrante.
+    letting_id : int
+        Identifiant primaire de l’annonce.
+
+    Returns
+    -------
+    HttpResponse
+        Rendu du template ``lettings/letting.html`` affichant le titre et l’adresse.
+    """
+    letting_obj = get_object_or_404(Letting, id=letting_id)
     context = {
-        'title': letting.title,
-        'address': letting.address,
+        "title": letting_obj.title,
+        "address": letting_obj.address,
     }
-    return render(request, 'lettings/letting.html', context)
+    return render(request, "lettings/letting.html", context)
+
+
+# --------------------------------------------------------------------------- #
+# Vues de test (erreur 500 et Sentry)
+# --------------------------------------------------------------------------- #
+
+
+def test_error(request):
+    """
+    Déclenche une exception non gérée pour afficher la page 500 personnalisée.
+
+    Parameters
+    ----------
+    request : HttpRequest
+        Requête HTTP entrante.
+
+    Raises
+    ------
+    Exception
+        Toujours levée, contenant le message « Test d'erreur 500 ».
+    """
+    raise Exception("Test d'erreur 500")
+
 
 def test_sentry(request):
-    raise Exception("Test de Sentry")
+    """
+    Déclenche une exception capturée par Sentry pour valider l’intégration.
 
+    Parameters
+    ----------
+    request : HttpRequest
+        Requête HTTP entrante.
+
+    Raises
+    ------
+    Exception
+        Toujours levée, contenant le message « Test de Sentry ».
+    """
+    raise Exception("Test de Sentry")
