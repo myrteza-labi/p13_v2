@@ -9,8 +9,11 @@ Contient :
 - `test_sentry` : déclenche une exception capturée par Sentry pour vérifier l’intégration.
 """
 
+import logging
 from django.shortcuts import render, get_object_or_404
 from .models import Letting
+
+logger = logging.getLogger(__name__)
 
 # --------------------------------------------------------------------------- #
 # Vues « utiles »
@@ -52,7 +55,12 @@ def letting(request, letting_id):
     HttpResponse
         Rendu du template ``lettings/letting.html`` affichant le titre et l’adresse.
     """
-    letting_obj = get_object_or_404(Letting, id=letting_id)
+    try:
+        letting_obj = get_object_or_404(Letting, id=letting_id)
+    except Exception as e:
+        logger.error("Erreur lors de la récupération du letting %s : %s", letting_id, str(e))
+        raise
+
     context = {
         "title": letting_obj.title,
         "address": letting_obj.address,

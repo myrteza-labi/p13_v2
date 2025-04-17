@@ -7,8 +7,11 @@ Contient :
 - `profile` : affiche le détail d’un profil utilisateur.
 """
 
+import logging
 from django.shortcuts import render, get_object_or_404
 from .models import Profile
+
+logger = logging.getLogger(__name__)
 
 # --------------------------------------------------------------------------- #
 # Vues principales
@@ -52,6 +55,11 @@ def profile(request, username):
         Rendu du template ``profiles/profile.html`` avec le contexte :
         ``{'profile': <Profile>}``.
     """
-    profile_obj = get_object_or_404(Profile, user__username=username)
+    try:
+        profile_obj = get_object_or_404(Profile, user__username=username)
+    except Exception as e:
+        logger.error("Erreur lors de l'accès au profil de l'utilisateur '%s' : %s", username, str(e))
+        raise
+
     context = {"profile": profile_obj}
     return render(request, "profiles/profile.html", context)
