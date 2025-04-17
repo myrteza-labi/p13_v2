@@ -23,3 +23,22 @@ def test_lettings_index_view(client):
     assert response.status_code == 200
     assert "Test Letting" in response.content.decode()
     assert "lettings/index.html" in [t.name for t in response.templates]
+
+@pytest.mark.django_db
+def test_letting_detail_view(client):
+    address = Address.objects.create(
+        number=5,
+        street="Rue des Tests",
+        city="TestCity",
+        state="TC",
+        zip_code=54321,
+        country_iso_code="TST"
+    )
+    letting = Letting.objects.create(title="Letting Detail Test", address=address)
+
+    url = reverse("lettings:letting", args=[letting.id])
+    response = client.get(url)
+
+    assert response.status_code == 200
+    assert "Letting Detail Test" in response.content.decode()
+    assert "lettings/letting.html" in [t.name for t in response.templates]
