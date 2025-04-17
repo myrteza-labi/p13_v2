@@ -1,57 +1,17 @@
 """
-profiles.views
-Vues HTTP pour l’application **profiles**.
+profiles.urls
+Table de routage URL pour l’application **profiles**.
 
-Contient :
-- `profiles_index` : liste tous les profils.
-- `profile` : affiche le détail d’un profil utilisateur.
+Toutes les URLs de cette app sont préfixées dans le projet principal par
+« /profiles/ » (via `include('profiles.urls', namespace='profiles')`).
 """
 
-from django.shortcuts import render, get_object_or_404
-from .models import Profile
+from django.urls import path
+from . import views
 
-# --------------------------------------------------------------------------- #
-# Vues principales
-# --------------------------------------------------------------------------- #
+app_name = "profiles"
 
-
-def profiles_index(request):
-    """
-    Page listant l’ensemble des profils.
-
-    Parameters
-    ----------
-    request : HttpRequest
-        Requête HTTP entrante.
-
-    Returns
-    -------
-    HttpResponse
-        Rendu du template ``profiles/index.html`` avec le contexte :
-        ``{'profiles_list': <QuerySet[Profile]>}``.
-    """
-    profiles_list = Profile.objects.all()
-    context = {"profiles_list": profiles_list}
-    return render(request, "profiles/index.html", context)
-
-
-def profile(request, username):
-    """
-    Page de détail pour un utilisateur donné.
-
-    Parameters
-    ----------
-    request : HttpRequest
-        Requête HTTP entrante.
-    username : str
-        Nom d’utilisateur dont on souhaite afficher le profil.
-
-    Returns
-    -------
-    HttpResponse
-        Rendu du template ``profiles/profile.html`` avec le contexte :
-        ``{'profile': <Profile>}``.
-    """
-    profile_obj = get_object_or_404(Profile, user__username=username)
-    context = {"profile": profile_obj}
-    return render(request, "profiles/profile.html", context)
+urlpatterns = [
+    path("", views.profiles_index, name="index"),
+    path("<str:username>/", views.profile, name="profile"),
+]
