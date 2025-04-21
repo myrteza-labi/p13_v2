@@ -1,3 +1,7 @@
+[![Build Status](https://readthedocs.org/projects/oc-lettings-docs/badge/?version=latest)](https://oc-lettings-docs.readthedocs.io/en/latest/)
+[![Docker Image](https://img.shields.io/docker/pulls/martinlabi/oc-lettings)](https://hub.docker.com/r/martinlabi/oc-lettings)
+
+
 ## Résumé
 
 Site web d'Orange County Lettings
